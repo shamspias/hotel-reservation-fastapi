@@ -1,6 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
+from .models import Base  # Import your Base from models
 import os
 from dotenv import load_dotenv
 
@@ -12,7 +13,10 @@ engine = create_engine(SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-Base = declarative_base()
+
+# Function to create the tables
+def create_database():
+    Base.metadata.create_all(bind=engine)
 
 
 def get_db():
