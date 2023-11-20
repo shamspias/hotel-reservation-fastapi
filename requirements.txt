@@ -4,4 +4,4 @@ sqlalchemy
 pydantic
 python-dotenv
 fastapi-cors
-
+'pydantic[email]'
