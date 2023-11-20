@@ -26,6 +26,16 @@ def read_reservation(reservation_id: int, db: Session = Depends(database.get_db)
     return db_reservation
 
 
+@router.patch("/reservations/{reservation_id}", response_model=schemas.Reservation)
+def update_reservation_endpoint(reservation_id: int, reservation_update: schemas.ReservationUpdate,
+                                db: Session = Depends(database.get_db)):
+    updated_reservation = crud.update_reservation(db=db, reservation_id=reservation_id,
+                                                  reservation_update=reservation_update)
+    if updated_reservation is None:
+        raise HTTPException(status_code=404, detail="Reservation not found")
+    return updated_reservation
+
+
 @router.get("/reservations/export_csv/")
 async def export_reservations_csv(db: Session = Depends(database.get_db)):
     reservations = crud.get_reservations(db)
